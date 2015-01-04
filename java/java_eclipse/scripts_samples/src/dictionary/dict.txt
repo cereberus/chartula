@@ -1,0 +1,12 @@
+Book
+Movie
+Season
+Episode
+Sequel
+Remake
+Montage
+Script
+Screenwriter
+Director
+Frame
+Costume

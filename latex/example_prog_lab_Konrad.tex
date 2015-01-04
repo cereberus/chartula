@@ -1,0 +1,531 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[pdftex]{graphicx}
+\usepackage{times}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\renewcommand*\rmdefault{iwona}
+\usepackage{url}
+\usepackage[margin=2cm]{geometry}
+\usepackage{polski}
+\usepackage{float}
+\usepackage{listings}
+
+
+\author{Konrad Ciesielski\\385546\\kc43592@st.amu.edu.pl}
+\title{Laboratorium z Programowania\\ 
+Sprawozdanie z zajęć nr 9}
+
+\date{\today}
+
+
+\begin{document}
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=Scilab,
+  }
+
+
+
+\lstset{escapechar=@,style=customc}
+
+
+\maketitle
+
+\begin{center}
+\includegraphics{logo}
+\end{center}
+ 
+\newpage
+\tableofcontents
+\newpage %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Opis ćwiczenia}
+\-\hspace{8mm}Celem ćwiczenia jest zapoznanie się ze środowiskiem Scilab. Zadanie polega na przetworzeniu niewielkiej bazy danych z wykorzystaniem prostej analizy statystycznej oraz narzędzia do rysowania wykresów. Ćwiczenie sprawdza również umiejętność stosowania instrukcji warunkowych i pętli na przykładzie odpowiedzi na pytania do zadanej bazy danych. Ze względu na anglojęzyczne źródło przyjęto również takie nazwy zmiennych i opisy rysunków. Komentarze i tekst generowany na konsoli zapisano w języku polskim. 
+\section{Opis bazy danych}
+\-\hspace{8mm}Analizowana baza danych \textbf{\textit{chmovie.xls}}\footnote{ \textbf{\textit{chmovie.xls}} - \textit{"alcohol and tobacco use in children's movies", sample:50 movies} dostępny do pobrania ze strony $http://people.sc.fsu.edu/~jburkardt/datasets/triola/triola.html$} zawiera tytuły filmów (n=50) dla dzieci i prezentowanych tam treści przedstawiających palenie papierosów i spożywanie alkoholu. Ich udział został wyrażony zmiennymi ilościowymi odnoszącymi się do sumarycznego czasu wyświetlania wraz podaniem czasu trwania całego utworu. Dane zostały również opisane nazwą odpowiedniej wytwórni filmowej. Pełne zestawienie znajduje się na str.3 w Tabeli 3. 
+\section{Analiza danych}
+\begin{lstlisting}
+
+//--INICJALIZACJA ZMIENNYCH--//
+//---------------------------//
+
+//--Pobierz zmienne z danymi z pliku "projekt1.mat"--//
+load("projekt1.mat");
+
+//zmienne wspolczynnikow korelacji//
+kor1=0;
+kor2=0;
+kor3=0;
+
+//zmienne wspolczynnikow detminacji//
+det1=0;
+det2=0;
+det3=0;
+
+//zmienna zliczajaca wystapienia filmow bez tresci zwiazanych z alkoholem i paleniem tytoniu//
+licznik=0;
+
+//zmienna wyrazaja % filmow bez tresci zwiazanych z alkoholem i paleniem tytoniu//
+procent=0;
+
+//zmienna przechowujaca tytulu filmow bez tresci zwiazanych z alkoholem i paleniem tytoniu//
+indeks=[""];
+
+//zmienna przechowujaca odpowiednie wytwornie filmow bez tresci zwiazanych z alkoholem i paleniem tytoniu//
+wytwornia=[""];
+
+//zmienne przechowujace liczbe filmow danej wytwornii//
+wyt1=0;
+wyt2=0;
+wyt3=0;
+wyt4=0;
+wyt5=0;
+
+//zmienne przechowujace liczbe filmow danej wytwornii bez tresci zwiazanych z alkoholem i paleniem tytoniu//
+bez1=0;
+bez2=0;
+bez3=0;
+bez4=0;
+bez5=0;
+
+//zmienna okreslajaca rozmiar tabeli dane//
+[wier kol]=size(dane);
+temp=cell(0,0);
+
+\end{lstlisting}
+\subsection{Podstawowy opis statystyczny}
+\begin{lstlisting}
+
+//--URUCHOMIENIE SKRYPTU--//
+//---------------------------//
+
+//--Wyswietlaj w konsoli dane autora--//
+disp("");
+disp("Autorem skryptu jest Konrad Ciesielski - nr indeksu: 385546");
+disp("");
+//--Wyswietl w konsoli kolejno srednia, odchylenie standardowe, wariancje dla danych z odpowiednich kolumn"--//
+disp("");
+disp("PODSTAWOWE STATYSTYKI:");
+disp("");
+\end{lstlisting}
+\-\hspace{8mm}Dokonano opisu statystycznego zmiennych zawierającego podstawowe miary jak ich średnia, odchylenie standardowe i wariancja. Pełne zestawienie danych znajduje się w Tabeli 1.
+\begin{lstlisting}
+//Dlugosc//
+disp("");
+disp(naglowki(1,3));
+disp("Srednia");
+disp(mean(dane(:,1)));
+disp("Odchylenie standardowe");
+disp(stdev(dane(:,1)));
+disp("Wariancja");
+disp(variance(dane(:,1)));
+disp("");
+
+//Tyton//
+disp("");
+disp(naglowki(1,4));
+disp("Srednia");
+disp(mean(dane(:,2)));
+disp("Odchylenie standardowe");
+disp(stdev(dane(:,2)));
+disp("Wariancja");
+disp(variance(dane(:,2)));
+disp("");
+
+//Alkohol//
+disp("");
+disp(naglowki(1,5));
+disp("Srednia");
+disp(mean(dane(:,3)));
+disp("Odchylenie standardowe");
+disp(stdev(dane(:,3)));
+disp("Wariancja");
+disp(variance(dane(:,3)));
+disp("");
+\end{lstlisting}
+
+ \begin{table}[h]
+\centering
+\caption{Podstawowy opis statystyczny zmiennych}
+\begin{tabular}{|cccc|}
+\hline
+\multicolumn{1}{|c|}{\textbf{Zmienna}} & \multicolumn{1}{c|}{\textbf{Średnia}} & \multicolumn{1}{c|}{\textbf{Odchylenie standardowe}} & \textbf{Wariancja} \\ \hline
+\textit{Lenght (min)}                  & 79.2                                  & 8.963                                                & 80.33              \\
+\textit{Tobacco use (sec)}             & 57.44                                 & 103.997                                              & 10815.31           \\
+\textit{Alcohol use (sec)}             & 32.46                                 & 66.340                                               & 4400.98            \\ \hline
+\end{tabular}
+\end{table}
+\subsection{Korelacje zmiennych}
+\begin{lstlisting}
+//--Wyswietl w konsoli kolejno wspolczynnik korelacji r Persona i wspolczynnik determinccji dla danych kolumn oraz wyswietl wykres z seriami danych--"//
+disp("");
+disp("KORELACJE:");
+disp("");
+\end{lstlisting}
+\-\hspace{8mm}Wyznaczono współczynnik korelacji r Pearsona dla trzech kombinacji zmiennych. Za miarę efektu przyjęto współczynnik determinacji $R^{2}$, ze względu na to, że nie jest obciążony rozmiarem próby. Dla każdego przedziału trafności dodano opis słowny i informacje na temat możliwości zastosowania danej korelacji. Zestawienie ich znajduje się w Tabeli 2.
+\begin{lstlisting}
+//Tyton vs. Alkohol//
+disp("");
+disp(naglowki(1,4), "vs" ,naglowki(1,5));
+disp("");
+disp("Korelacja r Pearsona");
+kor1=correl(dane(:,2),dane(:,3))
+disp(kor1);
+det1=(kor1^2);
+disp("Wspolczynnik determinacji"); 
+disp(det1);
+if  det1<=0.5
+    disp("Brak determinacji - brak zastosowania w opisie badan naukowych")
+elseif det1<=0.6
+    disp("Slaba detrmiancja - zostosowanie w opisie badan naukowych")
+elseif det1<=0.8
+    disp("Wystarczajaca detrminacja - zastosowanie jako narzedzie do badan naukowych")
+elseif det1<=0.9
+    disp("Dobra detrminacja - zastosowanie jako narzedzie do badan diagnostycznych")    
+else 
+    disp("Bardzo dobra detrminacja - zastosowanie jako model regresji liniowej")    
+end
+disp("");
+f1=figure(1);
+title([naglowki(1,4),"vs",naglowki(1,5)],"fontsize",4 )
+a=gca();
+bar(a,[dane(:,2) dane(:,3)])
+a.rotation_angles = [0,180];
+a.x_ticks = tlist(["ticks", "locations", "labels"], (1:50)', opisy(:,1));
+xlabel(naglowki(1,1),"fontsize",4,"position",50);
+la=legend([naglowki(1,4);naglowki(1,5)],[,2]);
+
+//Alkohol vs. Dlugosc//
+disp("");
+disp(naglowki(1,3), "vs" ,naglowki(1,5));
+disp("");
+disp("Korelacja r Pearsona");
+kor2=correl(dane(:,1),dane(:,3))
+disp(kor2);
+disp("Wspolczynnik determinacji"); 
+det2=kor2^2;
+disp(det2);
+if  det2<=0.5
+    disp("Brak determinacji - brak zastosowania w opisie badan naukowych")
+elseif det2<=0.6
+    disp("Slaba detrmiancja - zostosowanie w opisie badan naukowych")
+elseif det2<=0.8
+    disp("Wystarczajaca detrminacja - zastosowanie jako narzedzie do badan naukowych")
+elseif det2<=0.9
+    disp("Dobra detrminacja - zastosowanie jako narzedzie do badan diagnostycznych")    
+else 
+    disp("Bardzo dobra detrminacja - zastosowanie jako model regresji liniowej")    
+end
+disp("");
+f2=figure(2);
+title([naglowki(1,3),"vs",naglowki(1,5)],"fontsize",4 )
+b=gca();
+bar(b,[dane(:,1) dane(:,3)])
+b.rotation_angles = [0,180]
+b.x_ticks = tlist(["ticks", "locations", "labels"], (1:50)', opisy(:,1));
+xlabel(naglowki(1,1),"fontsize",4,"position",50);
+lb=legend([naglowki(1,3);naglowki(1,5)],[,2]);
+
+//Tyton vs. Dlugosc//
+disp("");
+disp(naglowki(1,3), "vs" ,naglowki(1,4));
+disp("");
+disp("Korelacja r Pearsona");
+kor3=correl(dane(:,1),dane(:,2))
+disp(kor3);
+disp("Wspolczynnik determinacji"); 
+det3=kor2^2;
+disp(det3);
+if  det3<=0.5
+    disp("Brak determinacji - brak zastosowania w opisie badan naukowych")
+elseif det3<=0.6
+    disp("Slaba detrmiancja - zostosowanie w opisie badan naukowych")
+elseif det3<=0.8
+    disp("Wystarczajaca detrminacja - zastosowanie jako narzedzie do badan naukowych")
+elseif det3<=0.9
+    disp("Dobra detrminacja - zastosowanie jako narzredzie do badan diagnostycznych")    
+else 
+    disp("Bardzo dobra detrminacja - zastosowanie jako model regresji liniowej")    
+end
+disp("");
+f3=figure(3);
+title([naglowki(1,3),"vs",naglowki(1,4)],"fontsize",4 )
+c=gca();
+bar(c,[dane(:,1) dane(:,2)] )
+c.rotation_angles = [0,180]
+c.x_ticks = tlist(["ticks", "locations", "labels"], (1:50)', opisy(:,1));
+xlabel(naglowki(1,1),"fontsize",4,"position",50);
+lb=legend([naglowki(1,3);naglowki(1,4)],[,2]);
+\end{lstlisting}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.34]{rys_1.png}
+\caption{Histogram czasu prezentowanych treści związanych z paleniem papierosów a piciem alkoholu wg tytułów }
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.76]{rys_2.png}
+\caption{Histogram czasu prezentowanych treści związanych z piciem alkoholu a długością filmu wg tytułów }
+\end{figure}
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.76]{rys_3.png}
+\caption{Histogram czasu prezentowanych treści związanych z paleniem papierosów  a długością filmu wg tytułów}
+\end{figure}
+\begin{table}[h]
+\caption{Współczynniki korelacji i determinacji zmiennych}
+\begin{tabular}{|ccccc|}
+\hline
+\multicolumn{1}{|c|}{\textbf{Zmienna nr1}} & \multicolumn{1}{c|}{\textbf{Zmienna nr2}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Wpółczynnik \\ korelacji r\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Wpółczynnik \\ determinacji R2\end{tabular}}} & \textbf{Ocena miary efektu} \\ \hline
+\textit{Alcohol Use (sec)}                 & \textit{Tobacco Use (sec)}                & 0.238                                                                                            & 0.057                                                                                                & Brak determinacji           \\
+\textit{Alcohol Use (sec)}                 & \textit{Length (min)}                     & - 0.059                                                                                          & 0.003                                                                                                & Brak determinacji           \\
+\textit{Tobacco Use (sec)}                 & \textit{Length (min)}                     & - 0.135                                                                                          & 0.003                                                                                                & Brak determinacji           \\ \hline
+\end{tabular}
+\end{table}
+          
+\newpage 
+\begin{table}[H]\footnotesize
+\centering
+\caption{Analizowany zestaw danych}
+\begin{tabular}{|ccccc|}
+\hline
+\multicolumn{1}{|c|}{\textbf{Movie}}                                            & \multicolumn{1}{c|}{\textbf{Company}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Length \\ (min)\end{tabular}}} & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Tobacco \\ Use\\  (sec)\end{tabular}}} & \textbf{\begin{tabular}[c]{@{}c@{}}Alcohol \\ Use \\ (sec)\end{tabular}} \\ \hline
+\textit{Snow White}                                                             & Disney                                & 83                                                                                    & 0                                                                                             & 0                                                                        \\
+\textit{Pinnocchio}                                                             & Disney                                & 88                                                                                    & 223                                                                                           & 80                                                                       \\
+\textit{Fantasia}                                                               & Disney                                & 120                                                                                   & 0                                                                                             & 0                                                                        \\
+\textit{Dumbo}                                                                  & Disney                                & 64                                                                                    & 176                                                                                           & 88                                                                       \\
+\textit{Bambi}                                                                  & Disney                                & 69                                                                                    & 0                                                                                             & 0                                                                        \\
+\textit{Three Caballeros}                                                       & Disney                                & 71                                                                                    & 548                                                                                           & 8                                                                        \\
+\textit{Fun and Fancy Free}                                                     & Disney                                & 76                                                                                    & 0                                                                                             & 4                                                                        \\
+\textit{Cinderella}                                                             & Disney                                & 74                                                                                    & 37                                                                                            & 0                                                                        \\
+\textit{\begin{tabular}[c]{@{}c@{}}Alice in\\   Wonderland\end{tabular}}        & Disney                                & 75                                                                                    & 158                                                                                           & 158                                                                      \\
+\textit{Peter Pan}                                                              & Disney                                & 76                                                                                    & 51                                                                                            & 33                                                                       \\
+\textit{Lady and the Tramp}                                                     & Disney                                & 75                                                                                    & 0                                                                                             & 0                                                                        \\
+\textit{Sleeping Beauty}                                                        & Disney                                & 75                                                                                    & 0                                                                                             & 113                                                                      \\
+\textit{101 Dalmations}                                                         & Disney                                & 79                                                                                    & 299                                                                                           & 51                                                                       \\
+\textit{\begin{tabular}[c]{@{}c@{}}Sword and the\\   Stone\end{tabular}}        & Disney                                & 80                                                                                    & 37                                                                                            & 20                                                                       \\
+\textit{Jungle Book}                                                            & Disney                                & 78                                                                                    & 0                                                                                             & 0                                                                        \\
+\textit{Aristocats}                                                             & Disney                                & 78                                                                                    & 11                                                                                            & 142                                                                      \\
+\textit{Robin Hood}                                                             & Disney                                & 83                                                                                    & 0                                                                                             & 39                                                                       \\
+\textit{Rescuers}                                                               & Disney                                & 77                                                                                    & 0                                                                                             & 0                                                                        \\
+\textit{Winnie the Pooh}                                                        & Disney                                & 71                                                                                    & 0                                                                                             & 0                                                                        \\
+\textit{Fox and the Hound}                                                      & Disney                                & 83                                                                                    & 0                                                                                             & 0                                                                        \\
+\textit{Black Cauldron}                                                         & Disney                                & 80                                                                                    & 0                                                                                             & 34                                                                       \\
+\textit{\begin{tabular}[c]{@{}c@{}}Great Mouse\\   Detective\end{tabular}}      & Disney                                & 73                                                                                    & 165                                                                                           & 414                                                                      \\
+\textit{Oliver and Company}                                                     & Disney                                & 72                                                                                    & 74                                                                                            & 0                                                                        \\
+\textit{Little Mermaid}                                                         & Disney                                & 82                                                                                    & 9                                                                                             & 0   \pagebreak                                                                     \\
+\textit{\begin{tabular}[c]{@{}c@{}}Rescuers Down\\   Under\end{tabular}}        & Disney                                & 74                                                                                    & 0                                                                                             & 76                                                                       \\
+\textit{\begin{tabular}[c]{@{}c@{}}Beauty and the\\   Beast\end{tabular}}       & Disney                                & 84                                                                                    & 0                                                                                             & 123                                                                      \\
+\textit{Aladdin}                                                                & Disney                                & 90                                                                                    & 2                                                                                             & 3                                                                        \\
+\textit{Lion King}                                                              & Disney                                & 89                                                                                    & 0                                                                                             & 0                                                                        \\
+\textit{Pocahontas}                                                             & Disney                                & 81                                                                                    & 6                                                                                             & 7                                                                        \\
+\textit{Toy Story}                                                              & Disney                                & 81                                                                                    & 0                                                                                             & 0                                                                        \\
+\textit{\begin{tabular}[c]{@{}c@{}}Hunchback of Notre\\   Dame\end{tabular}}    & Disney                                & 90                                                                                    & 23                                                                                            & 46                                                                       \\
+\textit{\begin{tabular}[c]{@{}c@{}}James and the\\   Giant Peach\end{tabular}}  & Disney                                & 79                                                                                    & 206                                                                                           & 38                                                                       \\
+\textit{Hercules}                                                               & Disney                                & 92                                                                                    & 9                                                                                             & 13                                                                       \\
+\textit{Secret of NIMH}                                                         & MGM                                   & 82                                                                                    & 0                                                                                             & 0                                                                        \\
+\textit{\begin{tabular}[c]{@{}c@{}}All Dogs Go to\\   Heaven\end{tabular}}      & MGM                                   & 89                                                                                    & 205                                                                                           & 73                                                                       \\
+\textit{\begin{tabular}[c]{@{}c@{}}All Dogs Go to\\   Heaven 2\end{tabular}}    & MGM                                   & 82                                                                                    & 162                                                                                           & 72                                                                       \\
+\textit{Babes in Toyland}                                                       & MGM                                   & 74                                                                                    & 0                                                                                             & 0                                                                        \\
+\textit{Thumbelina}                                                             & Warner Bros                           & 86                                                                                    & 6                                                                                             & 5                                                                        \\
+\textit{\begin{tabular}[c]{@{}c@{}}Troll in Central\\   Park\end{tabular}}      & Warner Bros                           & 76                                                                                    & 1                                                                                             & 0                                                                        \\
+\textit{Space Jam}                                                              & Warner Bros                           & 81                                                                                    & 117                                                                                           & 0                                                                        \\
+\textit{Pippi Longstocking}                                                     & Warner Bros                           & 75                                                                                    & 5                                                                                             & 0                                                                        \\
+\textit{Cats Don't Dance}                                                       & Warner Bros                           & 75                                                                                    & 91                                                                                            & 0                                                                        \\
+\textit{An American Tail}                                                       & Universal                             & 77                                                                                    & 155                                                                                           & 74                                                                       \\
+\textit{Land Before Time}                                                       & Universal                             & 70                                                                                    & 0                                                                                             & 0                                                                        \\
+\textit{Fievel Goes West}                                                       & Universal                             & 75                                                                                    & 24                                                                                            & 28                                                                       \\
+\textit{\begin{tabular}[c]{@{}c@{}}We're Back:\\   Dinosaur Story\end{tabular}} & Universal                             & 64                                                                                    & 55                                                                                            & 0                                                                        \\
+\textit{Land Before Time 2}                                                     & Universal                             & 73                                                                                    & 0                                                                                             & 0                                                                        \\
+\textit{Balto}                                                                  & Universal                             & 74                                                                                    & 0                                                                                             & 0                                                                        \\
+\textit{Once Upon a Forest}                                                     & 20th Century Fox                      & 71                                                                                    & 0                                                                                             & 0                                                                        \\
+\textit{Anastasia}                                                              & 20th Century Fox                      & 94                                                                                    & 17                                                                                            & 39                                                                       \\ \hline
+\end{tabular}
+\end{table}
+\newpage 
+
+\section{Pytania badawcze}
+\begin{lstlisting}
+//--Wyswietl w konsoli pytania z odpowiedziami uzyskanymi dzieki petli i wyrazeniom warunkowym"--//
+disp("");
+disp("PYTANIA BADAWCZE:");
+disp("");
+\end{lstlisting}
+
+\subsection{Ile filmów z bazy danych jest pozbawiony treści związanych z paleniem 
+       tytoniu i alkoholem?  }
+       
+ \begin{lstlisting}      
+//Wypisanie liczby filmow bez tresci zwiazanych z paleniem tytoniu i alkoholem//
+disp("");
+disp("Ile filmow z bazy danych jest pozbawiony tresci zwiazanych z paleniem tytoniu i alkoholem?");
+disp("");
+for i=1:1:wier
+if dane(i,2)==0 & dane(i,3)==0
+    licznik=licznik+1;
+end
+end
+disp(licznik)
+disp("");
+      
+      \end{lstlisting}
+      Odpowiedz - 16.
+\subsection{ Co za filmy z bazy danych są pozbawione treści związanych z paleniem  
+      tytoniu i alkoholem?}
+       \begin{lstlisting}
+//Wypisanie tytulow filmow bez tresci zwiazanych z paleniem tytoniu i alkoholem//
+disp("");
+disp("Co za filmy z bazy danych sa pozbawione tresci zwiazanych z paleniem tytoniu i alkoholem?");
+disp("");
+for i=1:1:wier
+if dane(i,2)==0 & dane(i,3)==0
+indeks($+1)=opisy(i,1); 
+wytwornia($+1)=opisy(i,2);   
+end
+end
+disp(indeks)
+disp("");       
+       \end{lstlisting}
+\begin{table}[H]
+\centering
+\caption{Lista filmów pozbawionych treści związanych z paleniem tytoniu i alkoholem}
+\begin{tabular}{|l|}
+\hline
+\textbf{Tytuł filmu}        \\ \hline
+\textit{Snow White}         \\
+Fantasia                    \\
+\textit{Bambi}              \\
+\textit{Lady and the Tramp} \\
+\textit{Jungle Book}        \\
+\textit{Rescuers}           \\
+\textit{Winnie the Pooh}    \\
+\textit{Fox and the Hound}  \\
+\textit{Lion King}          \\
+\textit{Toy Story}          \\
+\textit{Secret of NIMH}     \\
+\textit{Babes in Toyland}   \\
+\textit{Land Before Time}   \\
+\textit{Land Before Time 2} \\
+\textit{Balto}              \\
+\textit{Once Upon a Forest} \\ \hline
+\end{tabular}
+\end{table}      
+\subsection{ Jaki procent filmów z bazy danych jest pozbawiony treści związanych z palenie
+      m tytoniu i alkoholem?}
+        \begin{lstlisting}
+        //Wypisanie ogolnego procentu filmow bez tresci zwiazanych z paleniem tytoniu i alkoholem//
+disp("");
+disp("Jaki procent z bazy danych jest pozbawiony tresci zwiazanych z paleniem tytoniu i alkoholem?");
+disp("");
+disp((licznik/wier)*100)
+disp("");
+         \end{lstlisting}
+      Odpowiedź - 32%.   
+         
+ \subsection{ Jaki procent produkcji danej wytwórnii z bazy danych jest związany z pa 
+      leniem tytoniu lub alkoholem? }
+             \begin{lstlisting}
+ //--Wypisanie procentu filmow Z(!)tresciami zwiazanych z paleniem tytoniu i alkoholem dla danej wytwornii--//
+disp("Jaki procent produkcji danej wytwornii z bazy danych jest zwiazany z paleniem tytoniu lub alkoholem?");
+disp("");
+
+//Disney//
+
+for i=1:1:wier
+if opisy(i,2)=="Disney" 
+    wyt1=wyt1+1;
+end
+end
+for i=1:1:licznik+1
+if wytwornia(i,1)=="Disney" 
+    bez1=bez1+1;
+end
+end
+disp("Disney");
+disp((1-(bez1/wyt1))*100);
+disp("");
+
+//MGM//
+for i=1:1:wier
+if opisy(i,2)=="MGM" 
+    wyt2=wyt2+1;
+end
+end
+for i=1:1:licznik+1
+if wytwornia(i,1)=="MGM" 
+    bez2=bez2+1;
+end
+end
+disp("MGM");
+disp((1-(bez2/wyt2))*100);
+disp("");
+
+//Warner//
+for i=1:1:wier
+if opisy(i,2)=="Warner Bros" 
+    wyt3=wyt3+1;
+end
+end
+for i=1:1:licznik+1
+if wytwornia(i,1)=="Warner Bros" 
+    bez3=bez3+1;
+end
+end
+disp("Warner Bros");
+disp((1-(bez3/wyt3))*100);
+disp("");
+
+//Universal//
+for i=1:1:wier
+if opisy(i,2)=="Universal" 
+    wyt4=wyt4+1;
+end
+end
+for i=1:1:licznik+1
+if wytwornia(i,1)=="Universal" 
+    bez4=bez4+1;
+end
+end
+disp("Universal");
+disp((1-(bez4/wyt4))*100);
+disp("");
+
+//Fox//
+for i=1:1:wier
+if opisy(i,2)=="20th Century Fox" 
+    wyt5=wyt5+1;
+end
+end
+for i=1:1:licznik+1
+if wytwornia(i,1)=="20th Century Fox" 
+    bez5=bez5+1;
+end
+end
+disp("2Oth Century Fox");
+disp((1-(bez5/wyt5))*100);
+disp("");
+//---------------------------//
+//--KONIEC SKRYPTU--//
+\end{lstlisting}     
+\begin{table}[H]
+\centering
+\caption{Odsetek filmów w bazie danych zawierających treści związane z paleniem tytoniu wg wytwórnii}
+\begin{tabular}{|ccc|}
+\hline
+\multicolumn{1}{|c|}{\textbf{Wytwórnia}}       & \multicolumn{1}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Procent produkcji\\ w których\\ występują treści \\ związne z paleniem\\ tytoniu lub piciem alkoholu\end{tabular}}} & \textbf{Średnio}      \\ \hline
+\textit{Disney}                                & 70\%                                                                                                                                                                       &                       \\
+\textit{MGM}                                   & \multicolumn{1}{c|}{50\%}                                                                                                                                                  &                       \\
+\textit{Warner Bros}                           & \multicolumn{1}{c|}{100\%}                                                                                                                                                 & 68\%                  \\
+\textit{Universal}                             & \multicolumn{1}{c|}{\textit{50\%}}                                                                                                                                         & \multicolumn{1}{l|}{} \\
+\multicolumn{1}{|l}{\textit{20th Century Fox}} & \textit{50\%}                                                                                                                                                              & \multicolumn{1}{l|}{} \\ \hline
+\end{tabular}
+\end{table}
+
+\end{document}

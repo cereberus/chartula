@@ -1,0 +1,7 @@
+export PATH=$PATH:/usr/lib/jvm/java-7-openjdk-amd64/
+export JAVA_HOME=$JAVA_HOME:/usr/lib/jvm/java-7-openjdk-amd64/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/jesmasta/chartula/java/jbluez/bin/libjbluez.so 
+export CLASSPATH=/home/jesmasta/chartula/java/jbluez/bin/jbluez.jar
+javac Inquiry.java 
+java -cp . Inquiry
+java -cp .:/home/jesmasta/chartula/java/jbluez/bin/jbluez.jar Inquiry

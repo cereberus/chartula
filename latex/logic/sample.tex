@@ -1,0 +1,149 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% To compile this file, run the following command (under Linux):
+% > latex sample.tex
+% Then, to view it, use the following command:
+% > xdvi sample.dvi & 
+% You can generate a PDF file (for printing etc) using the following command:
+% > pdflatex sample.tex
+% Use a program like emacs or xemacs to manipulate the tex-file, e.g.:
+% > xemacs sample.tex &
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\documentclass[11pt]{article}
+
+\title{\textbf{\LaTeX\ for Logic}}
+\author{Ulle Endriss}
+
+\begin{document}
+\maketitle
+
+
+\section{Introduction}
+
+We give some simple examples to demonstrate how you can use \LaTeX\ to produce 
+a nice-looking document on a logic-related subject (or any scientific subject
+in general). So this is about learning \LaTeX;\footnote{From now on I will 
+simply write LaTeX rather than \LaTeX. It would just get a bit tedious otherwise.} 
+don't take the actual content too serious.
+
+Section~\ref{logicexamples}, for instance, provides some logic-related examples. 
+(At the time of writing this, I didn't know which number that section would 
+get in the end, so I used a combination of the \texttt{label}- and the
+\texttt{ref}-command; see source file \texttt{sample.tex}.)
+
+% This is a comment, i.e. this text will not appear in the dvi-file.
+
+
+\section{Basic Stuff}
+
+The text is written in a simple text editor and then formatted using the 
+\texttt{latex}-command. Spacing, page breaks, numbering of sections, subsections,
+definitions, and other environments are all done automatically. This helps a lot
+when you develop large documents. Sometimes some ``manual'' adjustments are still
+necessary---nothing is perfect---but these should be kept to an absolute minimum.
+The underlying philosophy is that you concentrate on writing and leave the
+design of the document to the professionals (that is, the people who developed 
+LaTeX in this case).
+
+\subsection{Fonts}
+
+Look at the source for this paragraph to find out how to \emph{emphasise} parts
+of a sentence or how to get LaTeX to display something in \textbf{bold font}.
+In some case you may wish to use \texttt{typewriter font} or \textsf{sans serif}.
+Maybe even \textsc{Capitalisation}, but for aesthetic reason you should probably
+use all of these with some care.
+
+\subsection{Mathematics}
+
+If you want to write something mathematical, you need to switch to ``math mode''.
+For something short within a paragraph, such as $f(x^2 + 17)$, use dollar signs. 
+For a bigger formula that you want to be centred you could, for example, use the
+\texttt{eqnarray}-environment:
+\begin{eqnarray}
+\sum_{i=1}^n i & = & \frac{n \cdot (n+1)}{2}
+\end{eqnarray}
+% If you use eqnarray* instead you won't get an ``equation number''.
+
+Please note that this is just one of several ways of doing something like this.
+You can find other examples throughout this document.
+
+There are special commands for all sorts of mathematical symbols. Here are just
+some of them: $\alpha$, $\beta$, $\gamma$, $\subseteq$, $\equiv$, $\approx$,
+$\Leftarrow$, $\leftrightarrow$, $\infty$, $\in$, $\leq$, and so on \ldots 
+
+
+\section{Some Logic Examples}\label{logicexamples}
+
+Here's a list of examples:
+\begin{enumerate}
+\item $(\neg A \vee B) \leftrightarrow (A \rightarrow B)$
+\item $(\forall x) P(x) \wedge (\exists x) Q(x) \rightarrow 
+  (\exists x)(P(x) \wedge Q(x))$
+\item ${\cal M} \models \varphi \vee (\psi_1 \wedge \psi_2)$
+\item ${\cal M} \not\models \neg \varphi$
+\item
+  % We use \mbox to switch back to text mode within math mode and then 
+  % \textit to get the words in italics:
+  $\mbox{\textit{Famous}} \sqcap
+  \exists \mbox{\textit{dislikes}}.(\mbox{\textit{Rich}} \sqcup
+  \neg \mbox{\textit{Talented}})$
+\item $B \cup \{\varphi\}$ is satisfiable
+\item $\{(x,y) \in {\cal D}^2 \;|\; x < y\}$
+\item $\mu := \mu \circ [y\leftarrow g(b,a)]$
+\item $(\forall x_1)\cdots(\forall x_n)\varphi\,[y\leftarrow f(x_1,\ldots,x_n)]$
+\item $x_1$
+\item $\top$ and $\bot$
+\end{enumerate}
+
+In LaTeX, there are two ways of writing the Greek letter \emph{phi}
+(lowercase): $\phi$ and $\varphi$. I prefer the latter.
+
+
+\section{More Examples}
+
+And some more examples \ldots
+
+\subsection{Program Code}
+
+You can use the \texttt{verbatim}-environment to typeset short programs. It 
+tells LaTeX to print everything exactly as it appears in the source file, using 
+typewriter font (that is, the real LaTeX is essentially ``switched off'').
+\begin{quote} % used to get the indentation
+\begin{verbatim}
+reverse_list( [], []).
+
+reverse_list( [Head | Tail], ReversedList) :-
+  reverse_list( Tail, ReversedTail),
+  append( ReversedTail, [Head], ReversedList).
+\end{verbatim}
+\end{quote}
+
+\subsection{Tables}
+
+Here's a simple table:
+\begin{center}
+\begin{tabular}{|l||c|c|c|}
+\hline
+Person & Biblical? & Female? & Superstar? \\
+\hline\hline
+Adam      & yes & no  & no  \\
+Britney   & no  & yes & yes \\
+Christina & no  & yes & yes \\
+Eve       & yes & yes & no  \\
+\hline
+\end{tabular}
+\end{center}
+
+
+\section{Getting More Information}
+
+There's a lot of information available on the web. 
+Try these links:
+\begin{itemize}
+\item \texttt{http://www.latex-project.org/intro.html}
+\item \texttt{http://www.ctan.org/tex-archive/info/lshort/english/}
+\end{itemize}
+
+
+\end{document}

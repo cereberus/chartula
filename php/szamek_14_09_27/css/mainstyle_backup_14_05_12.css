@@ -1,0 +1,177 @@
+/*
+.text_line
+{
+clear:both;
+margin-bottom:2px;
+}
+
+h1 {
+text-align:center; 
+font-style:bold;
+}
+h2 {
+text-align:center; 
+font-style:italic;
+}
+*/
+
+
+h1 {
+text-align:center; 
+font-style:bold;
+clear:both;
+margin-bottom:10px;
+}
+h2 {
+text-align:center; 
+font-style:italic;
+clear:both;
+margin-bottom:10px;
+}
+h3{
+text-align:left; 
+clear:both;
+}
+
+p.date {text-align:right;}
+p.main {text-align:justify;}
+p.index_show {text-align:left; font-style:bold;}
+p.all {
+}
+
+.under_blue 			 /* define absolute under blue background */
+{
+position:absolute;
+left:100px;
+top:280px;
+}
+
+.absolute 			 /* define absolute beneth */
+{
+position:absolute;
+left:100px;
+top:500px;
+}
+
+
+hr {color:sienna;}
+p {margin-left:20px;}
+
+body {
+background-image:url('/images/background/back.png');
+background-repeat:repeat-x;);
+}
+
+
+a:link {text-decoration:none;}    /* unvisited link */
+a:visited {text-decoration:none;} /* visited link */
+a:hover {text-decoration:underline;}   /* mouse over link */
+a:active {text-decoration:underline;}  /* selected link */
+
+.resize_tab 
+{
+float:left;
+width:110px;
+height:90px;
+margin:5px;
+}
+
+/*OBRAZEK ABOUT US */
+div.exe
+{
+width:600px;
+padding:10px;
+border:5px outset #98bf21;
+
+/*
+border-style:outset;
+border-color:#98bf21;
+*/
+
+margin:50px;
+/*
+margin-top:100px;
+margin-bottom:100px;
+margin-right:50px;
+margin-left:50px;
+
+margin:100px 50px;
+ */
+}
+
+
+div.img
+{
+  margin: 3px;
+  border: 2px solid #0000ff;
+  height: auto;
+  width: auto;
+  float: left;
+  text-align: center;
+}	
+
+div.img img
+{
+  display: inline;
+  margin: 3px;
+  border: 1px solid #ffffff;
+  /* Optycznosc */
+  opacity:0.4;
+  filter:alpha(opacity=40); /* For IE8 and earlier */
+}
+div.img a:hover img 
+{
+  /* Optycznosc */
+  
+  opacity:1.0;
+  filter:alpha(opacity=100); /* For IE8 and earlier */
+
+/* additional border */
+  border: 1px solid #0000ff; 
+}
+
+
+/*<!--- IMAGES PROPERTIES ENDS --->*/
+
+/*<!--- TILES PROPERTIES --->*/
+
+/*Border
+div.ex
+{
+height: 50px;
+width: 50px;
+padding:15px;
+border:5px solid #0000ff;
+margin:0px;
+text-align: center;
+float: left;
+}
+*/
+
+
+
+/*<!--- TILES PROPERTIES ENDS --->*/
+
+
+div.desc
+{
+  text-align: center;
+  font-weight: normal;
+ 
+  margin: 2px;
+}
+
+
+/*
+  img
+{
+opacity:0.5;
+filter:alpha(opacity=40); *//* For IE8 and earlier 
+}*/
+/*img:hover
+{
+opacity:1.0;
+filter:alpha(opacity=100); *//* For IE8 and earlier 
+}*/
+
+
