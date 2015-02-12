@@ -1,7 +1,30 @@
 #!/bin/bash
 
-mask_list=$(ls -1 ../sub001/masks/ | grep "epi")
+############################################
+#
+# The script for calculating correlations
+# between the even and odd runs for each
+# subject.
+#
+# It calculates correlations for whole DMN
+# as well as for the certain range of voxels
+# determined by the preprepared masks.
+#
+############################################
+
+###############################
+# lists created for: 
+#  * all the subjects
+#  * all masks
+###############################
+
 subs_list=$(ls -1 ../ | grep "sub00")
+mask_list=$(ls -1 ../sub001/masks/ | grep "epi")
+
+
+###############################
+# Script's main loop
+###############################
 
 for i in $subs_list
 do
