@@ -18,7 +18,7 @@
 
 import sys
 import numpy as np
-
+import nibabel as nib
 
 
 img = nib.load(sys.argv[1])
