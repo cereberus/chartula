@@ -4,52 +4,48 @@ import sys
 import numpy as np
 import nibabel as nib
 
-path_basic = sys.argv[1]
-number_of_runs = int(sys.argv[2])
-file_name = sys.argv[3]
+nifti_location = sys.argv[1]
+output_array = np.zeros((40,64,64,), dtype=np.float32)
+volume_number = 37
 
-runs_together = []
-output_array = np.zeros((40,64,64), dtype=np.float32)
+img = nib.load(nifti_location)
+data = img.get_data()
+affine = img.get_affine()
 
-for i in range(number_of_runs):
-    img = nib.load(path_basic + '{0:03}'.format(i+1)+ '/' + file_name)
-    data = img.get_data()
-    runs_together.append(data)
-    affine = img.get_affine()
+volumes = []
+x = 0
+while x<300:
+    volumes.append(x)
+    x += 2.5
 
-runs_together = np.array(runs_together)
+edges = [0, 12, 36, 48, 72, 84, 108, 120, 144, 156, 180, 192, 216, 228, 252, 264, 288]
 
-def count_voxels(fmri_data):
-    voxel_activated = 0
-    voxel_tmp = 0
-    for i in range(len(fmri_data[0])):
-        for j in range(len(fmri_data[0][i])):
-            for k in range(len(fmri_data[0][i][j])):
-                for l in range(len(runs_together)):
-                    if fmri_data[l][i][j][k] != 0:
-                        voxel_tmp += 1
-                if voxel_tmp == len(runs_together):
-                    voxel_activated += 1
-                    output_array[i][j][k] = 5
-                voxel_tmp = 0
-    print(voxel_activated)
+# here the info which volume which conditions is has to be put
+cond = [[cond001, [44,144]], cond002, cond003, cond004, \
+        cond005, cond006, cond007, cond008]
 
-count_voxels(runs_together)
-print(affine)
+# remove volumes where two states (object and rest) are present
+for i in volumes:
+    for j in edges:
+        if j > i and j < i+2.5:
+            volumes.remove(i)
 
-output_image = nib.Nifti1Image(output_array, affine)
-nib.save(output_image, 'voxels_coactivation.nii.gz')
+def get_volumes_range(fmri_data, vol_beg, vol_end):
+    for i in range(len(fmri_data)):
+        for j in range(len(fmri_data[i])):
+            for k in range(len(fmri_data[i][j])):
+                for l in range(len(fmri_data[i][j][k])):
+                    if l == vol_num:
+                        output_array[i][j][k] = fmri_data[i][j][k][l]
+    output_image = nib.Nifti1Image(output_array, affine)
+    nib.save(output_image, 'volume_'+'{0:03}'.format(vol_num)+'.nii.gz')
 
-
-# count_voxels for single image
-def count_voxels_py_like(fmri_data):
-    counter = 0
-    count_non_zeros = 0
-    for i in fmri_data:
-        for j in i:
-            for z in j:
-                counter += 1
-                if z != 0:
-                    count_non_zeros += 1
-    print counter
-    print count_non_zeros
+def get_single_volume(fmri_data, vol_num):
+    for i in range(len(fmri_data)):
+        for j in range(len(fmri_data[i])):
+            for k in range(len(fmri_data[i][j])):
+                for l in range(len(fmri_data[i][j][k])):
+                    if l == vol_num:
+                        output_array[i][j][k] = fmri_data[i][j][k][l]
+    output_image = nib.Nifti1Image(output_array, affine)
+    nib.save(output_image, 'volume_'+'{0:03}'.format(vol_num)+'.nii.gz')
