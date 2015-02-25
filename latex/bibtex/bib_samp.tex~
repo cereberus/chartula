@@ -1,0 +1,141 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+
+\usepackage{qtree}
+\usepackage{bchart}
+\usepackage{shadedgauss}
+\usepackage{pgf-pie}
+\usepackage{booktabs}
+\usepackage{dialogue}
+\usepackage{apacite}
+\usepackage{natbib}
+
+\title{mgr -- sandbox}
+\author{}
+\date{\relax}
+
+
+\begin{document}
+
+\section{qtree}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\Tree [ .A a b ]
+
+\bigskip
+
+\Tree [.A [ a b ] .B C ]
+
+\bigskip
+
+\Tree [ .{wiersz 1\\wiersz 2\\wiersz 3} a b ]
+
+
+
+
+
+\section{bchart}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{bchart}[max=5, step=1]
+\bcbar{4.5}
+\end{bchart}
+
+\bigskip
+
+\scalebox{0.7}{
+ \begin{bchart}[max=100, unit=\%]
+ \bcbar[label={tt DP}, text=BNC,
+ color=white]{49}
+ \bcbar[text=CHILDES, color=gray!10]{35.58}
+\bcbar[text=BEE, color=gray!50]{80}
+ \bcbar[text=AMEX, color=gray!80]{100}
+ \bcxlabel{\% without CRs}
+ \end{bchart}
+ }
+
+
+
+
+
+\section{shadedgauss}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\midshadedgauss{137}{15}{100}{175}{129}{145}
+
+
+
+
+
+\section{pfg-pie}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{tikzpicture}
+  \pie{10/A, 20/B, 30/C, 40/D}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+  \pie[square]{40/A, 30/B, 20/C, 10/D}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+  \pie[cloud, text=inside, scale font]{10/A, 20/B, 30/C, 40/D}
+\end{tikzpicture}
+
+
+\section{booktabs}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{center}
+\begin{tabular}{cc} \toprule
+pierwszy & drugi \\ \midrule
+trzeci & czwarty \\ \bottomrule
+\end{tabular}
+\end{center}
+
+
+\bigskip
+
+
+\begin{center}
+\begin{tabular}{cc} \toprule
+pierwszy & drugi \\ \cmidrule{2-2}
+trzeci & czwarty \\ \bottomrule
+\end{tabular}
+\end{center}
+
+
+
+
+\section{dialogue}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{dialogue}
+\speak{Ewa} Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a convallis enim.
+%%
+\direct{Wskazówki dla aktorów lub inne notatki}
+%%
+\speak{Adam} Vestibulum tempor iaculis risus sed elementum. In at elit tempor, fringilla orci ut, molestie augue. 
+\speak{Anonim} Ut ullamcorper purus... \direct{Wskazówki dla aktorów lub inne notatki} vitae nibh congue pretium in a augue.
+\end{dialogue}
+
+
+\newpage
+
+\section{Cytowania}
+
+\begin{itemize}
+\item \cite{typografia}
+\item \citep{typografia}
+\item \cite[s.~12]{typografia}
+\item \citeauthor{typografia}
+\item \citeyear{typografia}
+\end{itemize}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliographystyle{apacite}
+\bibliography{technicznie}
+
+
+
+\end{document}
