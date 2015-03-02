@@ -13,6 +13,8 @@ bold_cond_list = np.zeros((num_of_runs, num_of_conditions, 2))
 
 model_run_files = svc.get_model_run_files()
 
+volumes_per_cond = []
+
 while (len(model_run_files) > 0):
 
     # take first element of the list of condition files
@@ -31,3 +33,13 @@ while (len(model_run_files) > 0):
     bold_cond_list[run_num-1][cond_num-1] = cond_info
 
 
+for i in range(len(bold_cond_list)):
+    for j in range(len(bold_cond_list[0])):
+        print('run: ' + str(i+1)  + '; cond: ' + str(j+1))
+        print bold_cond_list[0][j]
+        print(svc.vols_range_per_cond(bold_cond_list[0][j][0],\
+                bold_cond_list[0][j][1]))
+        print('')
+
+a, b = svc.volumes_begin_sec()
+print(b)
