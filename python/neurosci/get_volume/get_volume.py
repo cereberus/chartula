@@ -12,6 +12,10 @@ img = nib.load(nifti_location)
 data = img.get_data()
 affine = img.get_affine()
 
+# here the info which volume which conditions is has to be put
+cond = [[cond001, [44,144]], cond002, cond003, cond004, \
+        cond005, cond006, cond007, cond008]
+
 volumes = []
 x = 0
 while x<300:
@@ -19,10 +23,6 @@ while x<300:
     x += 2.5
 
 edges = [0, 12, 36, 48, 72, 84, 108, 120, 144, 156, 180, 192, 216, 228, 252, 264, 288]
-
-# here the info which volume which conditions is has to be put
-cond = [[cond001, [44,144]], cond002, cond003, cond004, \
-        cond005, cond006, cond007, cond008]
 
 # remove volumes where two states (object and rest) are present
 for i in volumes:
