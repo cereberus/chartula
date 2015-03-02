@@ -73,7 +73,6 @@ def get_file_spec(file_as_element):
                                         file_as_element[i+12] + \
                                         file_as_element[i+13])
     return run_num, cond_num
-                                
 
 def get_cond_info(cond_file):
     cond_list = []
@@ -85,3 +84,38 @@ def get_cond_info(cond_file):
     # add 2 seconds to the last info to get the absolute end of the stimuli
     cond_sec_end = int(float(cond_list[-1][0]) + float(2))
     return [cond_sec_begin, cond_sec_end]
+
+def volumes_begin_sec():
+    volumes = []
+    vol_overlap = []
+    x = 0
+    edges = [0, 12, 36, 48, 72, 84, 108, 120, 144, 156, \
+            180, 192, 216, 228, 252, 264, 288]
+    while x<300:
+        volumes.append([x])
+        x += 2.5
+    for i in range(len(volumes)):
+        for j in range(len(edges)):
+            if edges[j] > volumes[i][0] and edges[j] < volumes[i][0]+2.5:
+                volumes[i].append(0)
+                vol_overlap.append(i)
+            if j == len(edges)-1 and len(volumes[i]) == 1:
+                volumes[i].append(1)
+    return volumes, vol_overlap
+
+def vols_range_per_cond(sec_beg, sec_end):
+    vols, b = volumes_begin_sec()
+    vol_begin = 0
+    number_of_vols = 0
+    for i in range(len(vols)):
+        if vols[i][0] >= sec_beg and vols[i][0] < sec_end \
+                and vols[i][1] == 1:
+            if number_of_vols == 0:
+                vol_begin = i
+            print(str(i) + " " + str(vols[i][0]))
+            number_of_vols += 1
+#     print(b)
+    return [vol_begin, number_of_vols]
+
+
+
