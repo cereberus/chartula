@@ -8,6 +8,7 @@ import os
 import os.path
 import csv
 import numpy as np
+import subprocess as sp  
 
 bold_cond_list = []
 main_dir_def = '/z/'
@@ -17,12 +18,18 @@ sub_dirs = sorted([os.path.join(o) \
         and o[0:3]=='sub'])
 
 # create list containing locations of the nifti files with bolds
-bold_dirs = []
-for root, dirs, files in os.walk('/z/sub002/BOLD/', topdown=False):
-    for file_name in files:
-        if 'bold.nii.gz' in file_name and len(root) == 29:
-            bold_dirs.append(os.path.join(root, file_name))
-            bold_dirs = sorted(bold_dirs)
+def get_bold_files(*args):
+    if len(args) == 0:
+        bold_main_dir = '/z/sub002/BOLD/'
+    else:
+        bold_main_dir = args[0]
+    bold_files = []
+    for root, dirs, files in os.walk(bold_main_dir, topdown=False):
+        for file_name in files:
+            if 'bold.nii.gz' in file_name and len(root) == 29:
+                bold_files.append(os.path.join(root, file_name))
+                bold_files = sorted(bold_files)
+    return bold_files
 
 # default directory storing model info
 def_dir = '/z/sub002/model/model001/onsets'
@@ -85,12 +92,14 @@ def get_cond_info(cond_file):
     cond_sec_end = int(float(cond_list[-1][0]) + float(2))
     return [cond_sec_begin, cond_sec_end]
 
-def volumes_begin_sec():
+def volumes_list_create():
     volumes = []
     vol_overlap = []
     x = 0
     edges = [0, 12, 36, 48, 72, 84, 108, 120, 144, 156, \
             180, 192, 216, 228, 252, 264, 288]
+    rests = [[0, 12],  [36, 48], [72, 84], [108, 120], [144, 156],\
+            [180, 192],[216, 228],[252, 264], [288, 300]]
     while x<300:
         volumes.append([x])
         x += 2.5
@@ -101,10 +110,15 @@ def volumes_begin_sec():
                 vol_overlap.append(i)
             if j == len(edges)-1 and len(volumes[i]) == 1:
                 volumes[i].append(1)
+        for rest in range(len(rests)):
+            if volumes[i][0] >= rests[rest][0] \
+                    and volumes[i][0] < rests[rest][1]:
+                volumes[i].append(0)
+
     return volumes, vol_overlap
 
 def vols_range_per_cond(sec_beg, sec_end):
-    vols, b = volumes_begin_sec()
+    vols, vol_overlap = volumes_list_create()
     vol_begin = 0
     number_of_vols = 0
     for i in range(len(vols)):
@@ -112,10 +126,93 @@ def vols_range_per_cond(sec_beg, sec_end):
                 and vols[i][1] == 1:
             if number_of_vols == 0:
                 vol_begin = i
-            print(str(i) + " " + str(vols[i][0]))
+#             print(str(i) + " " + str(vols[i][0]))
             number_of_vols += 1
-#     print(b)
     return [vol_begin, number_of_vols]
 
+
+# Fill the list with info about the particular conditions
+# in the particular runs. Note that if the number of volumes
+# is 9 then the fist volume is removed in order to equal
+# the number of volumes per the condition.
+# the last argument is the decision wether or not to remove 1st
+# volume in the 9-volumes cases. The default is to cut
+def cond_vols_info(bold_cond_list, vols_per_cond, *args): 
+    if len(args) == 0:
+        decision = 1
+    else:
+        decision = args[0]
+    for i in range(len(bold_cond_list)):
+        for j in range(len(bold_cond_list[0])):
+#             print('run: ' + str(i+1)  + '; cond: ' + str(j+1))
+#            print bold_cond_list[0][j]
+            vol_cond = vols_range_per_cond(\
+                    bold_cond_list[0][j][0],\
+                    bold_cond_list[0][j][1])
+            if decision == 0:
+                vols_per_cond[i][j] = vol_cond
+            else:
+                # check what is the number of the volumes and removes 
+                # the first of them if necessery
+                if vol_cond[1] == 8:
+                    vols_per_cond[i][j] = vol_cond
+#                     print(vol_cond)
+                else:
+                    vols_per_cond[i][j] = [vol_cond[0]+1, vol_cond[1]-1]
+#                     print([vol_cond[0]+1, vol_cond[1]-1])
+#                 print('')
+    return vols_per_cond 
+
+def rest_universal(num_of_conditions):
+    vols, vol_overlap = volumes_list_create()
+    number_of_vols = 0
+    rest_num = 0
+    rests_array = np.zeros((num_of_conditions + 1, 2))
+    for i in range(len(vols)):
+        print(str(i) + " " +str(vols[i]))
+    for i in range(len(vols)):
+        if len(vols[i]) == 3:
+            if vols[i][2] == 0:
+                if number_of_vols == 0:
+                    print('ehhe')
+                    rests_array[rest_num][0] = i
+                number_of_vols += 1
+                print(str(i) + " " + str(number_of_vols))
+                print(str(i) + "/" + str(len(vols)-1))
+                if i == len(vols)-1:
+                    rests_array[rest_num][1] = number_of_vols
+                    print('tester')
+                    print(str(i) + " " + str(number_of_vols))
+                if i < len(vols)-1:
+                    if len(vols[i+1]) == 2:
+                        rests_array[rest_num][1] = number_of_vols
+                        number_of_vols = 0
+                        rest_num += 1
+    return rests_array
+
+def slice_nifti_conds(cond_info, *args):
+    if len(args) == 0:
+        bold_files = get_bold_files()
+    else:
+        bold_files = get_bold_files(args[0])
+    for run in range(len(cond_info)):
+        for cond in range(len(cond_info[run])):
+#             print('fslroi ' + bold_files[run] + \
+#                     ' slicing_outputs/sub002_run' + \
+#                     '{0:03}'.format(run+1) + '_' + \
+#                     'cond' + \
+#                     '{0:03}'.format(cond+1) + ' ' + \
+#                      str(int(cond_info[run][cond][0])) + ' ' + \
+#                      str(int(cond_info[run][cond][1])))
+            cmd = 'fslroi ' + bold_files[run] + \
+                    ' slicing_outputs/sub002_run' + \
+                    '{0:03}'.format(run+1) + '_' + \
+                    'cond' + \
+                    '{0:03}'.format(cond+1) + ' ' + \
+                     str(int(cond_info[run][cond][0])) + ' ' + \
+                     str(int(cond_info[run][cond][1]))
+            process = sp.Popen(cmd,stdout=sp.PIPE,shell=True)
+            output = process.communicate()[0]
+            print output
 
 
