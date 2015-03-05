@@ -16,7 +16,6 @@ model_run_files = svc.get_model_run_files()
 vols_per_cond = np.zeros((num_of_runs, num_of_conditions, 2))
 
 while (len(model_run_files) > 0):
-
     # take first element of the list of condition files
     considered = model_run_files.pop(0)
 
@@ -33,8 +32,11 @@ while (len(model_run_files) > 0):
     bold_cond_list[run_num-1][cond_num-1] = cond_info
 
 vols_per_cond = svc.cond_vols_info(bold_cond_list, vols_per_cond, 1)
+# cond_files_list = svc.slice_nifti_conds(vols_per_cond)
 
-svc.slice_nifti_conds(vols_per_cond)
+rests_info = svc.rest_universal(8)
+# svc.slice_nifti_rests(rests_info)
 
-# a, b = svc.volumes_list_create()
-# print(b)
+merge_info_list = svc.create_merge_list(vols_per_cond, rests_info)
+
+svc.merge_files(merge_info_list)
