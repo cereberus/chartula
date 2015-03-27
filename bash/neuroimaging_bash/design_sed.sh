@@ -9,27 +9,38 @@
 #
 ############################################
 
+cd cocaine
+img_dirs=$(ls -d */ | cut -f1 -d'/')
+cd ..
 
-img_dirs=$(ls -d -1 cocaine/*/)
-img_dirs+=$(ls -d -1 controls/*/)
+img_dirs+=' '
+
+cd controls
+img_dirs+=$(ls -d */ | cut -f1 -d'/')
+cd ..
 
 echo $img_dirs
+
 
 main_design='design.fsf'
 
 sub_base='1065809'
-# sub='9858555'
-# num='2'
+design_path='cocaine/1065809/session_1/rest_1/rest.ica/design.fsf'
 
 mkdir designs
-
-echo $ROOT$sub'session_1/_rest_'$num'/rest_linearMNI3mm.nii.gz'
-echo $img_dirs
 
 for sub in $img_dirs
 do
     for num in 1 2 
     do
-        sed "s/${sub_base}\/session_1\/rest_1/${sub}\/session_1\/rest_$num/g" design.fsf > designs/design_${sub}_rest_${num}.fsf
+        if [ $sub != $sub_base ] || [ $num != 1 ]
+        then
+#             echo "${sub}"
+#             echo "${sub_base}"
+#             echo "${sub_base}/session_1/rest_1"
+#             echo "${sub}/session_1/rest_$num"
+#             echo ""
+            sed "s/${sub_base}\/session_1\/rest_1/${sub}\/session_1\/rest_$num/g" $design_path > designs/design_${sub}_rest_${num}.fsf
+    fi
     done
 done
