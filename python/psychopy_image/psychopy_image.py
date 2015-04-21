@@ -1,12 +1,6 @@
 #!/usr/bin/env python2
 
 from psychopy import visual, core, event, gui
-# import random
-# import datetime
-# import csv
-# import os
-# from os import listdir
-# from os.path import isfile, join
 
 mywin = visual.Window([2560, 1440],monitor='testMonitor', \
         winType='pyglet', units='pix', fullscr = True)
