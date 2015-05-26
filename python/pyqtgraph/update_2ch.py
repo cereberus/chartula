@@ -17,7 +17,6 @@ win = pg.GraphicsWindow()
 p1 = win.addPlot(title="FP1")
 p1.setYRange(-8, 8, padding=0)
 curve_01 = p1.plot()
-data_01 = np.random.normal(size=(10,1000))
 ptr = 0
 
 win.nextRow()
@@ -25,7 +24,6 @@ win.nextRow()
 p2 = win.addPlot(title="FP2")
 p2.setYRange(-8, 8, padding=0)
 curve_02 = p2.plot()
-data_02 = np.random.normal(size=(10,1000))
 ptr = 0
 
 readData = [0.0, 0.0]
