@@ -33,3 +33,4 @@ else:
     cmd += ' -t int -t int -t int -t int -t int -t int -t int \
             -s 0 -s 0 -s 0 -s 0 -s 0 -s 0 -s 0'
     process = sp.Popen(cmd,stdout=sp.PIPE,shell=True)
+    print('tap to click is disabled')
