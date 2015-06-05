@@ -2,7 +2,7 @@
     csv module for writing 2D list to the file
 
     arguments:
-        results - 2D python list
+        input_list - 2D python list
         name - output filename (can be preceded with path)
 
     example use:
