@@ -38,6 +38,8 @@ else:
     if output == 'Xfce-basic':
         cmd += ' -s HighContrastInverse'
         process = sp.Popen(cmd,stdout=sp.PIPE,shell=True)
+        print('dark')
     else:
         cmd += ' -s Xfce-basic'
         process = sp.Popen(cmd,stdout=sp.PIPE,shell=True)
+        print('light')
