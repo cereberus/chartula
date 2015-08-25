@@ -1,4 +1,3 @@
-import time
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -12,4 +11,4 @@ for i in range(50):
     a.append(np.random.random())
     plt.plot(a, 'b')
     plt.draw()
-    time.sleep(0.05)
+    plt.pause(0.00001)
