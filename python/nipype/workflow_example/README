@@ -1,0 +1,3 @@
+input file is in the 'data' directory,
+output of the workflow is in the 'working_dir' directory
+script 'workflow_example.py' doest the trick
