@@ -56,7 +56,7 @@ plt.rc('font', **font)
 plt.tight_layout()
 plt.ylim(0.0, 1.0)
 
-[i.set_linewidth(2) for i in ax.spines.itervalues()]
+[i.set_linewidth(2.5) for i in ax.spines.itervalues()]
 
 plt.savefig('corr_plt_sub002.svg', transparent=True)
 plt.show()
