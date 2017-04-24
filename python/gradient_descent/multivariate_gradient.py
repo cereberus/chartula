@@ -11,6 +11,7 @@ Two examplary functions available. Choose function variable value: 1 or 2.
 
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import axes3d
 import inspect
 
 
@@ -38,7 +39,7 @@ derivate_2 = (
 ###
 
 # possible 1 or 2
-function = 2
+function = 1
 
 c = 0.01
 epsilon = 0.000001

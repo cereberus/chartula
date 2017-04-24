@@ -17,17 +17,17 @@ arguments = np.arange(-1, 1, 0.05)
 
 plt.plot(arguments, f(arguments))
 
-c = 0.05
+c = 0.4
 E = 0.00001
 
-epochs = 1000
+epochs = 3
 
 positions = np.zeros(epochs)
 
 x = np.zeros(epochs)
 y = np.zeros(epochs)
 
-x[0] = 0.9
+x[0] = 1.2
 y[0] = f(x[0])
 
 for i in range(1, epochs):
