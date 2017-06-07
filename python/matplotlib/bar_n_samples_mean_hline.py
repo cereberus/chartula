@@ -93,8 +93,8 @@ ax.legend(
 
 # maximize the window
 # NOTICE: figManager messes with figure size.
-figManager = plt.get_current_fig_manager()
-figManager.window.showMaximized()
+#  figManager = plt.get_current_fig_manager()
+#  figManager.window.showMaximized()
 
 # set export figure size
 fig.set_size_inches(25, 15)
